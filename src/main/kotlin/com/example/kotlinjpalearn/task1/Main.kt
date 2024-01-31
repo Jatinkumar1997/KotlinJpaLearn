@@ -1,5 +1,7 @@
 package com.example.kotlinjpalearn.task1
 
+import com.example.kotlinjpalearn.task1.htmlDsl.HtmlElement
+import com.example.kotlinjpalearn.task1.htmlDsl.HtmlTag
 import kotlinx.coroutines.*
 import kotlin.time.measureTime
 
@@ -63,11 +65,54 @@ suspend fun main() {
     swap(stringsList, 1, 2)
     println("After swap List : $stringsList")
 
-    /////////////////////////////////
+    ///////////////////////////////// **Sealed Classes:** /////////////////////
 
+    fun area(shape: Shape) {
+        when (shape) {
+            is Shape.Circle -> println("Area of circle : ${shape.calculateArea()}")
+            is Shape.Rectangle -> println("Area of rectangle : ${shape.calculateArea()}")
+        }
+    }
+    area(Shape.Circle(5.0))
+    area(Shape.Rectangle(5.0, 6.0))
+
+    ///////////////////////////// **Type-Safe Builders:** ////////////////////
+
+
+    val html = html {
+        tag("title") {
+            text("Title of html page")
+        }
+        tag("body") {
+            text("Body...")
+        }
+    }
+
+    println(html.render())
+
+    //////////////////////////// **Functional Programming:** //////////////////////
+
+    val listOfNumbers = listOf(2, 3, 4, 5)
+    val sum = listOfNumbers.filter { num -> num % 2 == 0 }.map { num -> num * num }.reduce { acc, num -> acc + num }
+    println("Sum of squares of even numbers from list : $sum")
 }
 
 suspend fun delayFun(): String {
     delay(2000L)
     return "Task completed"
 }
+
+fun html(configure: HtmlTag.Builder.() -> Unit): HtmlElement {
+    val builder = HtmlTag.Builder("html")
+    builder.configure()
+    return builder.build()
+}
+
+fun HtmlTag.Builder.addChild(child: HtmlElement) {
+    children = children.plus(child)
+}
+
+fun HtmlTag.Builder.text(text: String) = addChild { text }
+
+fun HtmlTag.Builder.tag(name: String, configure: HtmlTag.Builder.() -> Unit) =
+    addChild(HtmlTag.Builder(name).apply(configure).build())
