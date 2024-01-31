@@ -23,6 +23,9 @@ class UserController(
 
     @GetMapping("/products")
     fun getProducts(): List<Product> {
+        productService.saveProduct(Product("abc", 55.0, 1))
+        productService.saveProduct(Product("xyz", 51.0, 2))
+        productService.saveProduct(Product("efg", 50.0, 3))
         return productService.getProductWithPriceMoreThan50()
     }
 
@@ -59,5 +62,17 @@ class UserController(
         return projectService.fetchEmployeesByProject(projectId)
     }
 
+    @GetMapping("/productSummary")
+    fun getProductSummary(): List<ProductSummary> {
+        productService.saveProduct(Product("abc", 55.0, 1))
+        productService.saveProduct(Product("xyz", 51.0, 2))
+        productService.saveProduct(Product("efg", 44.0, 3))
+        return productService.getProductSummaryForProductsWithPriceLessThan50()
+    }
 
+    @GetMapping("/user/{userName}")
+    fun getUser(@PathVariable userName: String): User? {
+        userService.addUser()
+        return userService.findUserByUserName(userName)
+    }
 }
