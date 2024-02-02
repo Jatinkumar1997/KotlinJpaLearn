@@ -1,9 +1,12 @@
 package com.example.kotlinjpalearn.repository
 
 import com.example.kotlinjpalearn.entity.Product
-import org.springframework.data.jpa.repository.JpaRepository
+import com.example.kotlinjpalearn.enums.ProductCategory
+import org.springframework.data.mongodb.repository.MongoRepository
 
-interface ProductRepository : JpaRepository<Product, Long> {
+interface ProductRepository : MongoRepository<Product, Long> {
 
-    fun findProductByProductPriceGreaterThan(productPrice: Double): List<Product>
+    fun findByProductCategoryAndProductPriceLessThan(
+        productCategory: ProductCategory, productPrice: Double
+    ): Set<Product>
 }

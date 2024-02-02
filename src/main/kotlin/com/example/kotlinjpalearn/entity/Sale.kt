@@ -5,9 +5,10 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
 
-@Document("orders")
-class Order(
-    val orderDate: LocalDate,
-    val customerId: Long,
-    @Id val orderId: Long? = null
+@Document("sales")
+class Sale(
+    val saleDate: LocalDate,
+    val quantitySold: Long,
+    val productId: Long,
+    @Id val saleId: Long? = null
 )

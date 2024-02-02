@@ -1,8 +1,8 @@
 package com.example.kotlinjpalearn.repository
 
 import com.example.kotlinjpalearn.entity.User
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 
-interface UserRepository : JpaRepository<User, Long> {
-    fun findUserByUserName(userName: String): User?
+interface UserRepository : MongoRepository<User, Long> {
+    fun findByUserName(userName: String): User?
 }

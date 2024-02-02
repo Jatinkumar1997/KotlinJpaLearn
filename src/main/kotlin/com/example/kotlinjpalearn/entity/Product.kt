@@ -1,10 +1,13 @@
 package com.example.kotlinjpalearn.entity
 
-import jakarta.persistence.*
+import com.example.kotlinjpalearn.enums.ProductCategory
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 
-@Entity
+@Document("products")
 class Product(
-    @Column(name = "name", unique = true, nullable = false) val productName: String,
-    @Column(name = "price", nullable = false) val productPrice: Double,
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val productId: Long? = null
+    val productName: String,
+    val productPrice: Double,
+    val productCategory: ProductCategory,
+    @Id val productId: Long?
 )

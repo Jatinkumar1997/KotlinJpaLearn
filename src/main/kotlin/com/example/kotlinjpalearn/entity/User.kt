@@ -1,21 +1,20 @@
 package com.example.kotlinjpalearn.entity
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
+import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
-@Entity
-@Table(name = "users")
-data class User (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-    @Column(name = "user_name", unique = true, nullable = false)
+// Created a compound index using multiple fields(userName,email) to reduce the time
+// on queries where these fields are required.
+@Document("users")
+data class User(
+    @Id val id: Long? = null,
+    @Indexed(name = "username_email_index", unique = true)
     val userName: String,
-    @Column(name = "first_name", nullable = false)
     val firstName: String,
-    @Column(name = "last_name", nullable = false)
     val lastName: String,
-    @Column(name = "email_address", nullable = false)
+    @Indexed(name = "username_email_index")
     val emailId: String,
-    @Column(name = "day_of_birth", nullable = false)
     val dayOfBirth: LocalDate
 )
